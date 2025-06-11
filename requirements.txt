@@ -1,0 +1,15 @@
+# requirements.txt
+openai
+langgraph
+langchain
+streamlit
+python-docx
+fpdf
+scikit-learn
+nltk
+requests
+tqdm
+PyMuPDF
+python-magic
+pypdf
+os

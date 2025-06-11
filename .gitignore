@@ -1,0 +1,32 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment folders
+pipeline/
+venv/
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Python-specific
+*.log
+*.pot
+*.pyc
+*.pyo
+
+# Uploaded files
+uploads/
+
+# PDFs and Word Docs generated
+*.pdf
+*.docx
+
+# Jupyter
+.ipynb_checkpoints/
