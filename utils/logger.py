@@ -1,104 +1,87 @@
 # utils/logger.py
 import logging
+import os
+
+LOG_FILE_PATH = "pipeline_debug.log"
 
 
-def setup_logger():
+def setup_logger(debug_mode=False):
     logger = logging.getLogger("AgenticPipeline")
-    if not logger.handlers:
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            "%(asctime)s - %(levelname)s - %(message)s")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG if debug_mode else logging.INFO)
+
+    if logger.hasHandlers():
+        logger.handlers.clear()
+
+    # Console handler (used for Streamlit print redirection)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG if debug_mode else logging.INFO)
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+
+    # File handler
+    file_handler = logging.FileHandler(LOG_FILE_PATH, mode='a')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
     return logger
 
-# Create a logger instance
+
+# Global logger instance
 logger = setup_logger()
 
-def log_info(message):
-    """Log an informational message."""
-    logger.info(message)
 
-def log_error(message):
-    """Log an error message."""
-    logger.error(message)
+def log_info(message): logger.info(message)
+def log_error(message): logger.error(message)
+def log_debug(message): logger.debug(message)
+def log_warning(message): logger.warning(message)
+def log_critical(message): logger.critical(message)
 
-def log_debug(message):
-    """Log a debug message."""
-    logger.debug(message)
-
-def log_warning(message):
-    """Log a warning message."""
-    logger.warning(message)
-
-def log_critical(message):
-    """Log a critical message."""
-    logger.critical(message)
 
 def log_exception(exc):
-    """Log an exception with traceback."""
-    logger.exception("An exception occurred: %s", exc)
+    logger.exception("Exception occurred: %s", exc)
 
-def log_state(state):   
-    """Log the current state of the pipeline."""
-    logger.debug("Current state: %s", state)
+
+def log_state(state):
+    logger.debug("Pipeline State: %s", state)
+
 
 def log_node_execution(node_name, state):
-    """Log the execution of a node with its state."""
-    logger.info("Executing node: %s", node_name)
+    logger.info(f"🟦 Executing Node: {node_name}")
     log_state(state)
-    logger.info("Node %s executed successfully.", node_name)
 
-def log_pipeline_start():
-    """Log the start of the pipeline execution."""
-    logger.info("Pipeline execution started.")
 
-def log_pipeline_end():
-    """Log the end of the pipeline execution."""
-    logger.info("Pipeline execution completed.")
+def log_pipeline_start(): logger.info("🚀 Pipeline execution started.")
+def log_pipeline_end(): logger.info("✅ Pipeline execution completed.")
+
 
 def log_pipeline_error(exc):
-    """Log an error that occurred during pipeline execution."""
-    logger.error("Pipeline execution failed: %s", exc)
+    logger.error("❌ Pipeline execution failed: %s", exc)
     log_exception(exc)
-    logger.info("Pipeline execution terminated due to an error.")
+    logger.info("Terminating pipeline due to error.")
+
 
 def log_pipeline_summary(state):
-    """Log a summary of the pipeline execution."""
-    logger.info("Pipeline Summary:")
-    logger.info("Final Document Path: %s", state.get("final_document_path", "Not available"))
-    logger.info("SmolDocling Extraction: %s", state.get("smol_extracted", "Not available"))
-    logger.info("GPT Extraction: %s", state.get("gpt_extracted", "Not available"))
-    logger.info("Evaluation Feedback: %s", state.get("evaluation_feedback", "Not available"))
+    logger.info("📊 Pipeline Summary:")
+    logger.info("Final Document Path: %s",
+                state.get("final_document_path", "N/A"))
+    logger.info("SmolDocling Output: %s", state.get("smol_extracted", "N/A"))
+    logger.info("GPT Output: %s", state.get("gpt_extracted", "N/A"))
+    logger.info("Evaluation Feedback: %s",
+                state.get("evaluation_feedback", "N/A"))
+
 
 def log_evaluation_results(state):
-    """Log the evaluation results of the extraction."""
-    score = state.get("evaluation_score", "Not available")
-    passed = state.get("evaluation_passed", "Not available")
-    logger.info("Evaluation Results:")
+    score = state.get("evaluation_score", "N/A")
+    passed = state.get("evaluation_passed", "N/A")
+    logger.info("📈 Evaluation Results:")
     logger.info("Score: %s", score)
     logger.info("Passed: %s", passed)
     if not passed:
-        logger.warning("The extraction did not pass the evaluation.")
+        logger.warning("⚠️ Extraction did not meet the threshold.")
     else:
-        logger.info("The extraction passed the evaluation successfully.")
+        logger.info("✅ Extraction passed successfully.")
 
-# Example usage of the logger
-if __name__ == "__main__":
-    log_pipeline_start()
-    try:
-        # Simulate pipeline execution
-        state = {"pdf_path": "example.pdf", "smol_extracted": {}, "gpt_extracted": {}}
-        log_node_execution("smoldocling_node", state)
-        log_node_execution("final_output_node", state)
-        log_node_execution("evaluate_node", state)
-        log_evaluation_results(state)
-        log_pipeline_summary(state)
-    except Exception as e:
-        log_pipeline_error(e)
-    finally:
-        log_pipeline_end()
-
-# This module provides logging functionality for the Agentic AI Document Intelligence pipeline.
-# It includes functions to log various events, states, and errors during the pipeline execution.
+# This logger setup allows you to capture detailed logs of the pipeline execution,
+# including node execution, state changes, and evaluation results.

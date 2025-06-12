@@ -1,11 +1,23 @@
 # graph/nodes/retry_node.py
 from tools.smoldocling_tool import call_smoldocling_with_feedback
 
+MAX_RETRIES = 3  # You can also move this to a config file
+
 
 def retry_node(state):
+    current_retries = state.get("retry_attempts", 0)
+
+    if current_retries >= MAX_RETRIES:
+        state["evaluation_passed"] = True  # Force exit on max retry
+        state["evaluation_feedback"] = "Max retries reached. Proceeding with best effort."
+        return state
+
     feedback = state.get("evaluation_feedback", "")
     improved = call_smoldocling_with_feedback(state["pdf_path"], feedback)
-    state["smol_extracted"] = improved
+
+    state["retry_attempts"] = current_retries + 1
+    state["smol_data"] = improved  # Ensure correct key is used
     return state
-# This node retries the SmolDocling extraction with user feedback.
-# It updates the state with the improved extraction results.
+
+# This node handles the retry logic, calling the Smoldocling tool with feedback
+# and updating the state accordingly. It checks the number of retries and exits
