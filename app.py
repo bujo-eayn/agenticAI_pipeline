@@ -1,4 +1,6 @@
 # agentic-doc-intel/app.py
+
+from openai import OpenAI
 import streamlit as st
 import io
 import sys
@@ -9,46 +11,58 @@ from graph.graph_builder import build_graph
 from tools.storage import save_uploaded_file
 from utils.logger import setup_logger, LOG_FILE_PATH
 
+from dotenv import load_dotenv
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise EnvironmentError("OPENAI_API_KEY not found in environment.")
+
+client = OpenAI(api_key=OPENAI_API_KEY)
+
 
 def main():
-    st.set_page_config(page_title="2Sage - Agentic AI DocIntel", layout="wide")
-    st.title("📄2Sage📄")
-    st.write("Upload a document and provide a prompt to begin the analysis pipeline.")
+    st.set_page_config(page_title="📄DocSage📄", layout="wide")
+    st.title("📄DocSage📄")
+    st.write(
+        "Upload a document and/or provide a prompt to begin the analysis pipeline.")
 
     st.sidebar.header("⚙️ Settings")
     debug_mode = st.sidebar.checkbox("Enable Debug Mode", value=False)
 
-    # 🧹 Add Clear Logs Button
     if st.sidebar.button("🧹 Clear Logs"):
         try:
             if os.path.exists(LOG_FILE_PATH):
                 with open(LOG_FILE_PATH, "w"):
-                    pass  # Truncate file
+                    pass
                 st.sidebar.success("✅ Logs cleared.")
             else:
                 st.sidebar.info("ℹ️ No logs to clear.")
         except Exception as e:
             st.sidebar.error(f"Error clearing logs: {e}")
 
-    # Re-initialize logger with debug setting
     logger = setup_logger(debug_mode=debug_mode)
 
     uploaded_file = st.file_uploader(
         "Choose a document", type=["pdf", "docx", "txt"])
     user_prompt = st.text_area("Your prompt for the AI:")
 
-    if st.button("Run Pipeline") and uploaded_file and user_prompt:
-        save_path = save_uploaded_file(uploaded_file)
-        st.success(f"File saved to {save_path}")
-        logger.info(f"User uploaded file: {save_path}")
+    if st.button("Run Pipeline") and (uploaded_file or user_prompt):
+        save_path = None
+        if uploaded_file:
+            save_path = save_uploaded_file(uploaded_file)
+            st.success(f"File saved to {save_path}")
+            logger.info(f"User uploaded file: {save_path}")
+
+        input_type = "file_or_both" if uploaded_file else "prompt_only"
 
         state = {
-            "file_path": save_path,
+            "file_path": save_path or "",
             "user_prompt": user_prompt,
             "retry_attempts": 0,
+            "input_type": input_type,
         }
 
-        # Capture printed output
         log_output = io.StringIO()
         if debug_mode:
             sys.stdout = log_output
@@ -58,7 +72,7 @@ def main():
             logger.info("Building graph and starting pipeline.")
             graph = build_graph()
             with st.spinner("Running agentic pipeline..."):
-                result = graph.invoke(state)
+                result = graph.invoke(state, config={"recursion_limit": 30})
 
             st.subheader("📝 Final Output")
             st.text_area("Output", result.get(
@@ -79,15 +93,12 @@ def main():
                 st.error("⚠️ Something went wrong while processing your document.")
 
         finally:
-            # Restore stdout/stderr
             if debug_mode:
                 sys.stdout = sys.__stdout__
                 sys.stderr = sys.__stderr__
-
                 st.subheader("🐛 Debug Logs (Session)")
                 st.code(log_output.getvalue())
 
-                # Also show persistent log file
                 if os.path.exists(LOG_FILE_PATH):
                     st.subheader("🗂 Persistent Log File")
                     with open(LOG_FILE_PATH, "r") as f:
