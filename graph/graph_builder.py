@@ -2,7 +2,7 @@
 from langgraph.graph import StateGraph
 from graph.nodes.entry import user_input_node
 from graph.nodes.preprocess_doc import preprocess_doc_node
-from graph.nodes.gpt_extract import gpt_extract_node
+from graph.nodes.extractor import extractor_node
 from graph.nodes.smoldocling_call import smoldocling_node
 from graph.nodes.evaluate import evaluate_node
 from graph.nodes.retry_node import retry_node
@@ -11,6 +11,8 @@ from graph.nodes.apply_prompt import apply_prompt_node
 from graph.nodes.conversation import conversation_node
 
 from typing import TypedDict, Optional
+
+from utils.logger import logger
 
 
 class PipelineState(TypedDict, total=False):
@@ -32,11 +34,12 @@ class PipelineState(TypedDict, total=False):
 
 
 def build_graph():
+    logger.info("Inside build_graph function, starting to build the state graph.")
     builder = StateGraph(PipelineState)
 
     builder.add_node("entry", user_input_node)
     builder.add_node("preprocess_doc", preprocess_doc_node)
-    builder.add_node("gpt_extract", gpt_extract_node)
+    builder.add_node("extractor", extractor_node)
     builder.add_node("smoldocling", smoldocling_node)
     builder.add_node("evaluate", evaluate_node)
     builder.add_node("retry", retry_node)
@@ -54,8 +57,8 @@ def build_graph():
         )
     )
 
-    builder.add_edge("preprocess_doc", "gpt_extract")
-    builder.add_edge("gpt_extract", "smoldocling")
+    builder.add_edge("preprocess_doc", "extractor")
+    builder.add_edge("extractor", "smoldocling")
     builder.add_edge("smoldocling", "evaluate")
 
     builder.add_conditional_edges(
@@ -67,5 +70,6 @@ def build_graph():
     builder.add_edge("retry", "smoldocling")
     builder.add_edge("apply_prompt", "final_output")
     builder.add_edge("conversation", "final_output")
+    logger.info("Graph built successfully, compiling the graph.")
 
     return builder.compile()

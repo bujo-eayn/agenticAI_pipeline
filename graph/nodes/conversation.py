@@ -2,7 +2,7 @@
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from utils.logger import log_exception, log_info
+from utils.logger import log_exception, log_info, logger
 import os
 
 load_dotenv()
@@ -26,12 +26,15 @@ If context is insufficient, acknowledge limitations.
 
 
 def conversation_node(state: dict) -> dict:
+    logger.info("Executing conversation_node with state: %s", state)
     try:
         log_info("Running conversation node for prompt-only interaction.")
         user_prompt = state.get("user_prompt", "")
 
         if not user_prompt:
             raise ValueError("No user prompt provided.")
+        logger.info("User prompt: %s", user_prompt)
+        log_info("User prompt received, preparing to call GPT.")
 
         response = client.chat.completions.create(
             model="gpt-4",
@@ -49,10 +52,14 @@ def conversation_node(state: dict) -> dict:
         state["gpt_data"] = {"conversation_response": gpt_reply}
         print(f"GPT Response: {gpt_reply}")  # For debugging purposes
         state["final_doc"] = gpt_reply  # 👈 Make output available to UI
+        logger.info("Conversation node completed with state: %s", state)
+        log_info("Conversation node execution completed successfully.")
         return state
 
     except Exception as e:
         log_exception(e)
         state["gpt_data"] = {"error": str(e)}
         state["final_doc"] = f"Error: {str(e)}"
+        logger.error("Conversation node failed with state: %s", state)
+        log_info("Conversation node execution failed.")
         return state

@@ -10,6 +10,7 @@ import os
 from graph.graph_builder import build_graph
 from tools.storage import save_uploaded_file
 from utils.logger import setup_logger, LOG_FILE_PATH
+from langchain_core.runnables import RunnableConfig
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -57,8 +58,8 @@ def main():
         input_type = "file_or_both" if uploaded_file else "prompt_only"
 
         state = {
-            "file_path": save_path or "",
-            "user_prompt": user_prompt,
+            "file_path": save_path or "No File Uploaded",
+            "user_prompt": user_prompt or "No Prompt Provided",
             "retry_attempts": 0,
             "input_type": input_type,
         }
@@ -70,9 +71,10 @@ def main():
 
         try:
             logger.info("Building graph and starting pipeline.")
-            graph = build_graph()
+            graph = build_graph() # Carry on Evaluation from here
+            config = RunnableConfig(recursion_limit=5)
             with st.spinner("Running agentic pipeline..."):
-                result = graph.invoke(state, config={"recursion_limit": 30})
+                result = graph.invoke(state, config=config)
 
             st.subheader("📝 Final Output")
             st.text_area("Output", result.get(

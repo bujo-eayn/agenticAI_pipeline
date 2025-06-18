@@ -1,9 +1,10 @@
 # graph/nodes/preprocess_doc.py
 import os
-from utils.logger import log_node_execution
+from utils.logger import log_node_execution, logger
 
 
 def preprocess_doc_node(state):
+    logger.info("Executing preprocess_doc_node with state: %s", state)
     file_path = state.get("file_path")
     if not file_path or not os.path.exists(file_path):
         raise FileNotFoundError("No file found in the state.")
@@ -13,4 +14,6 @@ def preprocess_doc_node(state):
 
     state["file_content"] = content
     log_node_execution("preprocess_doc_node", state)
+    logger.info("Preprocessing completed, file content length: %d", len(content))
+    logger.info("preprocess_doc_node completed with state: %s", state)
     return state
