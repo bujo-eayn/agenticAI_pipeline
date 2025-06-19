@@ -58,8 +58,8 @@ def main():
         input_type = "file_or_both" if uploaded_file else "prompt_only"
 
         state = {
-            "file_path": save_path or "No File Uploaded",
-            "user_prompt": user_prompt or "No Prompt Provided",
+            "file_path": save_path or "",
+            "user_prompt": user_prompt or "",
             "retry_attempts": 0,
             "input_type": input_type,
         }
@@ -78,7 +78,7 @@ def main():
 
             st.subheader("📝 Final Output")
             st.text_area("Output", result.get(
-                "final_doc", "No output generated."), height=300)
+                "final_output_text", "No output generated."), height=300)
 
             if "final_document_path" in result:
                 with open(result["final_document_path"], "rb") as f:

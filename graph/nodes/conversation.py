@@ -51,7 +51,7 @@ def conversation_node(state: dict) -> dict:
 
         state["gpt_data"] = {"conversation_response": gpt_reply}
         print(f"GPT Response: {gpt_reply}")  # For debugging purposes
-        state["final_doc"] = gpt_reply  # 👈 Make output available to UI
+        state["final_output_text"] = gpt_reply  # 👈 Make output available to UI
         logger.info("Conversation node completed with state: %s", state)
         log_info("Conversation node execution completed successfully.")
         return state

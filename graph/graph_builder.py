@@ -1,6 +1,6 @@
 # graph/graph_builder.py
 from langgraph.graph import StateGraph
-from graph.nodes.entry import user_input_node
+from graph.nodes.entry import entry_node
 from graph.nodes.preprocess_doc import preprocess_doc_node
 from graph.nodes.extractor import extractor_node
 from graph.nodes.smoldocling_call import smoldocling_node
@@ -37,7 +37,7 @@ def build_graph():
     logger.info("Inside build_graph function, starting to build the state graph.")
     builder = StateGraph(PipelineState)
 
-    builder.add_node("entry", user_input_node)
+    builder.add_node("entry", entry_node)
     builder.add_node("preprocess_doc", preprocess_doc_node)
     builder.add_node("extractor", extractor_node)
     builder.add_node("smoldocling", smoldocling_node)

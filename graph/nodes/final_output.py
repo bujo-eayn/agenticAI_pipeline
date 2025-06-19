@@ -19,8 +19,9 @@ def final_output_node(state):
             # Prompt-only case: just convert GPT response into doc
             from docx import Document
             doc = Document()
-            doc.add_paragraph(state.get("final_output_text", "No output found."))
-            path = "outputs/final_conversation_output.docx"
+            doc.add_paragraph(
+                state.get("final_output_text", "No output found."))
+            path = "outputs/final_conversation_output2.docx"
             doc.save(path)
             state["final_document_path"] = path
             log_info("Final document created using GPT conversation response.")
