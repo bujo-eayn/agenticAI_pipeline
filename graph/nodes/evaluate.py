@@ -5,8 +5,10 @@ from utils.evaluator import evaluate_extraction
 
 def evaluate_node(state):
     logger.info("Executing evaluate_node with state: %s", state)
-    gpt_data = state.get("gpt_extracted", {})
+    gpt_data = state.get("gpt_data", {})
+    logger.info("GPT extracted data: %s", gpt_data)
     smol_data = state.get("smol_extracted", {})
+    logger.info("SmolDocling extracted data: %s", smol_data)
     result, score = evaluate_extraction(gpt_data, smol_data)
     state["evaluation_score"] = score
     state["evaluation_passed"] = result

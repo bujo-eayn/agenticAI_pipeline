@@ -1,7 +1,6 @@
 # graph/graph_builder.py
 from langgraph.graph import StateGraph
 from graph.nodes.entry import entry_node
-from graph.nodes.preprocess_doc import preprocess_doc_node
 from graph.nodes.extractor import extractor_node
 from graph.nodes.smoldocling_call import smoldocling_node
 from graph.nodes.evaluate import evaluate_node
@@ -38,7 +37,6 @@ def build_graph():
     builder = StateGraph(PipelineState)
 
     builder.add_node("entry", entry_node)
-    builder.add_node("preprocess_doc", preprocess_doc_node)
     builder.add_node("extractor", extractor_node)
     builder.add_node("smoldocling", smoldocling_node)
     builder.add_node("evaluate", evaluate_node)
@@ -52,12 +50,11 @@ def build_graph():
     builder.add_conditional_edges(
         "entry",
         lambda state: (
-            "preprocess_doc" if state.get(
+            "extractor" if state.get(
                 "input_type") == "file_or_both" else "conversation"
         )
     )
 
-    builder.add_edge("preprocess_doc", "extractor")
     builder.add_edge("extractor", "smoldocling")
     builder.add_edge("smoldocling", "evaluate")
 

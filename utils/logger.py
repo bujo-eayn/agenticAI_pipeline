@@ -67,7 +67,7 @@ def log_pipeline_summary(state):
     logger.info("Final Document Path: %s",
                 state.get("final_document_path", "N/A"))
     logger.info("SmolDocling Output: %s", state.get("smol_extracted", "N/A"))
-    logger.info("GPT Output: %s", state.get("gpt_extracted", "N/A"))
+    logger.info("GPT Output: %s", state.get("gpt_data", "N/A"))
     logger.info("Evaluation Feedback: %s",
                 state.get("evaluation_feedback", "N/A"))
 
