@@ -1,4 +1,4 @@
-# agentic-doc-intel/app.py
+# agenticai_pipeline/app.py
 
 from openai import OpenAI
 import streamlit as st
@@ -9,7 +9,7 @@ import os
 
 from graph.graph_builder import build_graph
 from tools.storage import save_uploaded_file
-from utils.logger import setup_logger, LOG_FILE_PATH
+from utils.logger import setup_logger, LOG_FILE_PATH, log_exception
 from langchain_core.runnables import RunnableConfig
 
 from dotenv import load_dotenv
@@ -45,7 +45,7 @@ def main():
     logger = setup_logger(debug_mode=debug_mode)
 
     uploaded_file = st.file_uploader(
-        "Choose a document", type=["pdf", "docx", "txt"])
+        "Choose a document", type=["pdf", "docx", "txt", "md", "doc", "csv", "xlsx", "png", "jpeg"],)
     user_prompt = st.text_area("Your prompt for the AI:")
 
     if st.button("Run Pipeline") and (uploaded_file or user_prompt):
@@ -55,12 +55,12 @@ def main():
             st.success(f"File saved to {save_path}")
             logger.info(f"User uploaded file: {save_path}")
 
-        input_type = "file_or_both" if uploaded_file else "prompt_only"
+        input_type = ["file_or_both"] if uploaded_file else ["prompt_only"]
 
         state = {
-            "file_path": save_path or "",
-            "user_prompt": user_prompt or "",
-            "retry_attempts": 0,
+            "file_path": [save_path] if save_path else [],
+            "user_prompt": [user_prompt] if user_prompt else [],
+            "retry_attempts": [0],
             "input_type": input_type,
         }
 
@@ -72,22 +72,27 @@ def main():
         try:
             logger.info("Building graph and starting pipeline.")
             graph = build_graph() # Carry on Evaluation from here
-            config = RunnableConfig(recursion_limit=5)
+            config = RunnableConfig(recursion_limit=500)
             with st.spinner("Running agentic pipeline..."):
                 result = graph.invoke(state, config=config)
 
+                # show status updates
+                st.subheader("📊 Pipeline Status")
+                for update in result.get("status_updates", []):
+                    st.markdown(f"- {update}")
+
             st.subheader("📝 Final Output")
             st.text_area("Output", result.get(
-                "final_output_text", "No output generated."), height=300)
+                "smol_extracted", "No output generated."), height=300)
 
-            if "final_document_path" in result:
-                with open(result["final_document_path"], "rb") as f:
+            if "final_doc" in result:
+                with open(result["final_doc"], "rb") as f:
                     st.download_button(
                         "Download Final Document", f, file_name="final_output.docx")
 
         except Exception as e:
             logger.error("Pipeline failed with an exception.")
-            logger.exception(e)
+            log_exception(e)
             if debug_mode:
                 st.error("🚨 An error occurred. See debug logs below.")
                 st.code(traceback.format_exc())

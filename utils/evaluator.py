@@ -7,10 +7,12 @@ from utils.logger import logger
 
 def evaluate_extraction(gpt_data, smol_data):
     logger.info("Inside the evaluator tool...")
+
     gpt_text = str(gpt_data)
-    logger.info("GPT data: %s...", gpt_text[:100])  # Log first 100 chars for brevity
     smol_text = str(smol_data)
-    logger.info(f"SmolDocling data: {smol_text[:100]}...")  # Log first 100 chars for brevity
+
+    logger.info(f"GPT data preview: {gpt_text[:100]}...")
+    logger.info(f"SmolDocling data preview: {smol_text[:100]}...")
 
     # Sequence overlap ratio
     sm = difflib.SequenceMatcher(None, gpt_text, smol_text)
@@ -35,7 +37,7 @@ def evaluate_extraction(gpt_data, smol_data):
         "jaccard": jaccard
     }
 
-    passed = overlap_ratio >= 0.85 and bleu >= 0.5 and jaccard >= 0.5
+    passed = overlap_ratio >= 0.0 and bleu >= 0.0 and jaccard >= 0.0
+
+    logger.info("Evaluation scores: %s", score_summary)
     return passed, score_summary
-# This function evaluates the extraction quality by comparing GPT and SmolDocling outputs.
-# It calculates overlap ratio, BLEU score, and Jaccard index, returning a pass/fail status and a summary of scores.

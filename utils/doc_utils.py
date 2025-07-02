@@ -15,26 +15,25 @@ def convert_to_pdf(file_path):
     return pdf_path
 
 
-def create_final_doc(extracted_data, source_pdf_path):
+def create_final_doc(extracted_data, file_path):
+    
     doc = Document()
     doc.add_heading("Final Extracted Document", 0)
     doc.add_paragraph(str(extracted_data))
 
-    # Determine directory for final output
-    if source_pdf_path:
-        base_path = Path(source_pdf_path).parent
-        if not base_path.exists():
-            base_path = Path("outputs")
-    else:
-        base_path = Path("outputs")
+    # Always use the fixed "outputs" directory
+    base_path = Path("outputs")
 
     # Create the directory if it does not exist
     os.makedirs(base_path, exist_ok=True)
 
-    # Set final file name inside the chosen directory
-    final_path = base_path / \
-        (Path(source_pdf_path).stem if source_pdf_path else "final_output")
-    final_path = final_path.with_suffix(".final.docx")
+    # Determine a name based on the uploaded file name if provided
+    if file_path and file_path[0]:
+        filename_stem = Path(file_path[0]).stem
+    else:
+        filename_stem = "final_output"
+
+    final_path = base_path / f"{filename_stem}.final.docx"
 
     # Save document
     doc.save(final_path)

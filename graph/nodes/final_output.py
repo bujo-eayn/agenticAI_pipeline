@@ -5,27 +5,28 @@ from utils.logger import log_info, logger
 
 
 def final_output_node(state):
-    logger.info("Executing final_output_node with state: %s", state)
+    # logger.info("Executing final_output_node with state: %s", state)
     try:
-        if "smol_extracted" in state and "pdf_path" in state:
+        if "smol_extracted" in state and "file_path" in state:
+            state["final_output_text"] = state.get("smol_extracted", "No Output found.")
             final_path = create_final_doc(
-                state["smol_extracted"], state["pdf_path"])
-            state["final_document_path"] = final_path
+                state["smol_extracted"], state["file_path"])
+            state["final_doc"] = final_path
             log_info("Final document created from structured extraction.")
             logger.info(
                 "Final document created from SmolDocling extraction: %s", final_path)
-            logger.info("Final output node completed with state: %s", state)
+            # logger.info("Final output node completed with state: %s", state)
         else:
             # Prompt-only case: just convert GPT response into doc
             from docx import Document
             doc = Document()
             doc.add_paragraph(
-                state.get("final_output_text", "No output found."))
+                state.get("final_output_text", "No Output found."))
             path = "outputs/final_conversation_output2.docx"
             doc.save(path)
-            state["final_document_path"] = path
+            state["final_doc"] = path
             log_info("Final document created using GPT conversation response.")
-            logger.info("Final output node completed with state: %s", state)
+            # logger.info("Final output node completed with state: %s", state)
     except Exception as e:
         from utils.logger import log_exception
         log_exception(e)
@@ -33,7 +34,7 @@ def final_output_node(state):
         logger.error("State at error: %s", state)
         raise e
     
-    logger.info("Final output node execution completed with state: %s", state)
+    # logger.info("Final output node execution completed with state: %s", state)
     log_info("Final output node execution completed.")
     return state
 

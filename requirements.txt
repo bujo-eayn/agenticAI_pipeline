@@ -12,3 +12,9 @@ tqdm
 PyMuPDF
 python-magic
 pypdf
+pydot
+graphviz
+langchain_anthropic
+tavily-python
+langchain_community
+langchain_openai

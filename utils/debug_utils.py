@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import os
 from pathlib import Path
@@ -5,14 +6,18 @@ from docx import Document
 from docx.shared import Inches
 
 
-def save_gpt_data_json(gpt_data: dict, filename: str = "debug_gpt_data01.json"):
-    """Saves GPT data to a JSON file."""
+def save_gpt_data_json(gpt_data: dict, tag: str = "gpt_data") -> str:
+    """Saves GPT data to a timestamped JSON file in the debug/ directory."""
     os.makedirs("debug", exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{tag}_{timestamp}.json"
     path = os.path.join("debug", filename)
+
     with open(path, "w", encoding="utf-8") as f:
         json.dump(gpt_data, f, indent=4, ensure_ascii=False)
-    return path
 
+    return path
 
 def create_structured_docx(gpt_data: dict, output_filename: str = "debug_structured_output01.docx"):
     """

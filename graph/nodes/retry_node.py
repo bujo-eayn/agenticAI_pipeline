@@ -18,7 +18,7 @@ def retry_node(state):
     improved = call_smoldocling_with_feedback(state["file_path"], feedback)
 
     state["retry_attempts"] = current_retries + 1
-    state["smol_data"] = improved  # Ensure correct key is used
+    state["smol_extracted"] = improved  # Ensure correct key is used
     logger.info(
         "Retry attempt %d completed, updated state: %s",
         state["retry_attempts"],

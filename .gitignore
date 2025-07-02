@@ -36,3 +36,7 @@ uploads/
 
 # My To-Do list
 To-Do.todo.txt
+
+langgraph.json
+
+.langgraph_api/

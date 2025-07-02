@@ -19,13 +19,15 @@ def setup_logger(debug_mode=False):
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    # File handler
-    file_handler = logging.FileHandler(LOG_FILE_PATH, mode='a')
+    # File handler with UTF-8 encoding to support emojis
+    file_handler = logging.FileHandler(
+        LOG_FILE_PATH, mode='a', encoding='utf-8')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
     return logger
+
 
 
 # Global logger instance
@@ -40,7 +42,7 @@ def log_critical(message): logger.critical(message)
 
 
 def log_exception(exc):
-    logger.exception("Exception occurred: %s", exc)
+    logger.exception("Exception occurred: ", exc_info=exc)
 
 
 def log_state(state):
@@ -65,8 +67,9 @@ def log_pipeline_error(exc):
 def log_pipeline_summary(state):
     logger.info("📊 Pipeline Summary:")
     logger.info("Final Document Path: %s",
-                state.get("final_document_path", "N/A"))
-    logger.info("SmolDocling Output: %s", state.get("smol_extracted", "N/A"))
+                state.get("final_doc", "N/A"))
+    smol_data = state.get("smol_data", {})
+    logger.info("SmolDocling Output: %s", smol_data)
     logger.info("GPT Output: %s", state.get("gpt_data", "N/A"))
     logger.info("Evaluation Feedback: %s",
                 state.get("evaluation_feedback", "N/A"))
