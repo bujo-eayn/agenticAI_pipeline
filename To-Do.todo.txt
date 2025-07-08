@@ -1,0 +1,38 @@
+#####Pick-up from
+- Completed the execution of the file only. Countinue by impelemnting the file and prompt execution
+
+Entry Node
+- Add a way to detect wether pdf file is scanned before sharing it to gpt4o
+
+Output Node
+- Prompt Engineering to give answers in the correct context always
+
+Entry & Smoldocling Node
+- Add logic to detect whether the smoldocling server is started before begining task
+
+??Questions
+- Can I pull in one instance of the foundation model and have it perform all tasks within my pipeline without calling it severally throughout processing
+- How does llm-builder-neo4j build entities
+- Are we able to create graphs that span throughout the documents
+- How does it work in general
+
+General:
+- Add timer to track how long each node takes to process
+- Add a way to track the number of times each node is called
+- Add logic for managing all API calls for remote tools: SmolDocling, Gemini 2.5pro
+
+Experiments:
+- Test the pipeline with different kinds of pdf documents
+    1. Test with a Native pdf: C:\Users\Job Ian\Desktop\iSURE\code\agenticAI_pipeline\outputs\pdf_only_tests\1\s.rund_paper1.pdf ✅
+    2. Test with a Scanned pdf: C:\Users\Job Ian\Desktop\iSURE\code\agenticAI_pipeline\outputs\pdf_only_tests\2\scanned_ s.rund_paper1.pdf ✅
+        2.b) Test with a scanned pdf that has been smoldocled, that is, smoldocling has done text extraction and performed visual grounding on document, then it is passed to gpt4o
+        2.a) Test using a different prompt for gpt, by instructing it to perform OCR in cases where the document is scanned
+- Improve the prompts within the pipeline
+        
+
+
+
+###Thoughts
+Supervisor Agent: See what has been shared by the user then come up with a plan:
+ a. Message only-> Conversation Agent
+ b. Message and attachment -> Document Extractor Agent -> Evaluator Agent -> 

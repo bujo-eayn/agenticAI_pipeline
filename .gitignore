@@ -35,8 +35,9 @@ uploads/
 *.log
 
 # My To-Do list
-To-Do.todo.txt
+# To-Do.todo.txt
 
 langgraph.json
 
 .langgraph_api/
+

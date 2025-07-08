@@ -10,11 +10,10 @@ import mimetypes
 import pandas as pd
 
 from utils.logger import log_exception, logger
+from utils.prompts import SUPERVISOR_SYSTEM_PROMPT, SYSTEM_APPLY_PROMPT
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-SYSTEM_EXTRACT_PROMPT = "You are a document parser. Extract all text, images, tables, and structural elements with layout preserved."
-SYSTEM_APPLY_PROMPT = "You are a document summarizer. Apply the user's prompt to the extracted content and return a structured summary."
 CHUNK_SIZE_TOKENS = 3000  # Leave headroom for system/user prompt and GPT response
 # file_path = file_path[0]
 
@@ -42,7 +41,7 @@ def extract_content(file_path):
     ext = os.path.splitext(file_path)[1].lower()
 
     if ext in [".pdf"]:
-        logger.info(f"Extracting content from PDF: {file_path}")
+        logger.info(f"GPT is Extracting content from PDF: {file_path}")
         return extract_from_pdf(file_path)
     elif ext in [".docx"]:
         return extract_from_docx(file_path)
@@ -130,7 +129,7 @@ def extract_elements_with_gpt(file_path):
                 [f"{item.get('type')}: {item.get('content')}" for item in chunk])
 
             messages = [
-                {"role": "system", "content": SYSTEM_EXTRACT_PROMPT},
+                {"role": "system", "content": SUPERVISOR_SYSTEM_PROMPT},
                 {"role": "user",
                     "content": f"Chunk {i + 1}/{len(content_chunks)} of document '{metadata['file_name']}':\n\n{chunk_str}"}
             ]
