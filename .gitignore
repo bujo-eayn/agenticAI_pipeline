@@ -41,3 +41,6 @@ langgraph.json
 
 .langgraph_api/
 
+
+# Ignore Debug Files
+debug/

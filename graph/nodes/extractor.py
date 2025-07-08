@@ -36,17 +36,11 @@ def extractor_node(state):
         status_updates.append("🧠 GPT extraction finished.")
 
         # Return updated state with gpt_data
-        return {
-            **state,  # Preserve existing state
-            "gpt_data": extracted,
-            "status_updates": status_updates
-        }
+        state["gpt_data"] = extracted
+        state["status_updates"] = status_updates
+        return state
 
     except Exception as e:
         logger.error("Error in GPT extraction: %s", e)
         status_updates.append("❌ GPT extraction failed.")
-        return {
-            **state,
-            "gpt_data": {},  # Empty dict to indicate failure
-            "status_updates": status_updates
-        }
+        return state

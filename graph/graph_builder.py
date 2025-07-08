@@ -40,7 +40,7 @@ def build_graph():
     logger.info("Building the sequential LangGraph workflow.")
     builder = StateGraph(PipelineState)
 
-    # Define nodes
+    # Set up nodes
     builder.add_node("entry", entry_node)
     builder.add_node("conversation", conversation_node)
     builder.add_node("smoldocling", smoldocling_node)
@@ -50,24 +50,26 @@ def build_graph():
     builder.add_node("apply_prompt", apply_prompt_node)
     builder.add_node("final_output", final_output_node)
 
+    # Entry point — no other node should ever route back here
     builder.set_entry_point("entry")
 
     # Branch after entry
     builder.add_conditional_edges(
         "entry",
-        lambda state: "conversation" if state.get(
-            "input_type") == ["prompt_only"] else "smoldocling"
+        lambda state: "conversation"
+        if state.get("input_type") == ["prompt_only"]
+        else "smoldocling"
     )
 
     builder.add_edge("conversation", "final_output")
     builder.add_edge("smoldocling", "extractor")
     builder.add_edge("extractor", "evaluate")
 
-    # Branch after evaluation
+    # Evaluate branch
     def eval_branch(state):
         if not state.get("evaluation_passed", False):
             if state.get("retry_attempts", 0) >= MAX_RETRIES:
-                return "final_output"  # Avoid retry loop
+                return "final_output"
             else:
                 return "retry"
         elif state.get("user_prompt") and any(p.strip() for p in state["user_prompt"]):

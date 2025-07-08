@@ -35,12 +35,10 @@ def evaluate_node(state):
         f"✅ Evaluation score → {formatted_score} — {'Passed ✅' if result else 'Failed ❌'}"
     )
 
-    updated_state = {
-        **state,
-        "evaluation_score": score,
-        "evaluation_passed": result,
-        "status_updates": status_updates
-    }
+    # Update state with evaluation results
+    state["evaluation_score"] = score
+    state["evaluation_passed"] = result
+    state["status_updates"] = status_updates
 
     # logger.info("Updated state after evaluation: %s", updated_state)
-    return updated_state
+    return state
