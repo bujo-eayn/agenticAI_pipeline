@@ -6,6 +6,7 @@ import io
 import sys
 import traceback
 import os
+from IPython.display import Image, display
 
 from graph.graph_builder import build_graph
 from tools.storage import save_uploaded_file
@@ -48,6 +49,7 @@ def main():
         "Choose a document", type=["pdf", "docx", "txt", "md", "doc", "csv", "xlsx", "png", "jpeg"],)
     user_prompt = st.text_area("Your prompt for the AI:")
 
+
     if st.button("Run Pipeline") and (uploaded_file or user_prompt):
         save_path = None
         if uploaded_file:
@@ -72,9 +74,14 @@ def main():
         try:
             logger.info("Building graph and starting pipeline.")
             graph = build_graph() # Carry on Evaluation from here
+            display(Image(graph.get_graph().draw_mermaid_png()))
             config = RunnableConfig(recursion_limit=500)
             with st.spinner("Running agentic pipeline..."):
                 result = graph.invoke(state, config=config)
+
+                # Should contain tool calls if any
+                print(result.get("intermediate_steps", "chat_history"))
+
 
                 # show status updates
                 st.subheader("📊 Pipeline Status")
@@ -83,7 +90,7 @@ def main():
 
             st.subheader("📝 Final Output")
             st.text_area("Output", result.get(
-                "smol_extracted", "No output generated."), height=300)
+                "final_output_text", "No output generated."), height=300)
 
             if "final_doc" in result:
                 with open(result["final_doc"], "rb") as f:

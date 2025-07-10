@@ -28,7 +28,8 @@ def entry_node(state):
         state.update({
             "input_type": ["prompt_only"],
             "dummy_context": DUMMY_CONTEXT,
-            "status_updates": status_updates
+            "status_updates": status_updates,
+            "chat_history": [],
         })
         return state
 
@@ -54,6 +55,7 @@ def entry_node(state):
         state.update({
             "input_type": ["file_or_both"],
             "file_content": [content],
-            "status_updates": status_updates
+            "status_updates": status_updates,
+            "chat_history": [],
         })
         return state

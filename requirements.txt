@@ -17,4 +17,4 @@ graphviz
 langchain_anthropic
 tavily-python
 langchain_community
-langchain_openai
+langchain-openai
