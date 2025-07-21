@@ -6,7 +6,7 @@ import io
 import sys
 import traceback
 import os
-from IPython.display import Image, display
+# from IPython.display import Image, display
 
 from graph.graph_builder import build_graph
 from tools.storage import save_uploaded_file
@@ -74,7 +74,7 @@ def main():
         try:
             logger.info("Building graph and starting pipeline.")
             graph = build_graph() # Carry on Evaluation from here
-            display(Image(graph.get_graph().draw_mermaid_png()))
+            # display(Image(graph.get_graph().draw_mermaid_png()))
             config = RunnableConfig(recursion_limit=500)
             with st.spinner("Running agentic pipeline..."):
                 result = graph.invoke(state, config=config)

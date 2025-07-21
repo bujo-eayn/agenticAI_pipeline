@@ -11,8 +11,13 @@ import pandas as pd
 
 from utils.logger import log_exception, logger
 from utils.prompts import SUPERVISOR_SYSTEM_PROMPT, SYSTEM_APPLY_PROMPT
+from dotenv import load_dotenv
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+load_dotenv()
+
+OPENAIAI_API_KEY = os.getenv("OPENAIAI_API_KEY")
+
+client = OpenAI(api_key=OPENAIAI_API_KEY)
 
 CHUNK_SIZE_TOKENS = 3000  # Leave headroom for system/user prompt and GPT response
 # file_path = file_path[0]
