@@ -40,4 +40,5 @@ Supervisor Agent: See what has been shared by the user then come up with a plan:
 
  #### 24th July Todo
  - Fix ChatPromptTemplate missing variables.✅
+ - Ensure the Supervisor can call the tools without being explicitly called by the user.
  - Add JsonLD to prepare the smoldocling responses

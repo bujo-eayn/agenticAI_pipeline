@@ -1,6 +1,7 @@
 # graph/agents/supervisor_agent.py
 
 from langchain_openai import ChatOpenAI
+import os
 from tools.smoldocling import smoldocling_tool
 from tools.gemini import gemini_tool
 from utils.prompts import SUPERVISOR_SYSTEM_PROMPT
@@ -9,7 +10,14 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_core.runnables import RunnableConfig
 import json
 
-model = ChatOpenAI(model="gpt-4o", temperature=0)
+from dotenv import load_dotenv
+load_dotenv()
+
+# Load the environment variables from the .env file
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+
+model = ChatOpenAI(model="gpt-4o", temperature=0, api_key=OPENAI_API_KEY)
 
 # Bind tools to the model - this is crucial!
 tools = [smoldocling_tool, gemini_tool]

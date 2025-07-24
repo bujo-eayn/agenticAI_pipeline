@@ -1,26 +1,15 @@
 # agenticai_pipeline/app.py
 
-from openai import OpenAI
 import streamlit as st
 import io
 import sys
 import traceback
 import os
-# from IPython.display import Image, display
 
 from graph.graph_builder import build_graph
 from tools.storage import save_uploaded_file
 from utils.logger import setup_logger, LOG_FILE_PATH, log_exception
 from langchain_core.runnables import RunnableConfig
-
-from dotenv import load_dotenv
-load_dotenv()
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    raise EnvironmentError("OPENAI_API_KEY not found in environment.")
-
-client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def main():
@@ -74,7 +63,6 @@ def main():
         try:
             logger.info("Building graph and starting pipeline.")
             graph = build_graph() # Carry on Evaluation from here
-            # display(Image(graph.get_graph().draw_mermaid_png()))
             config = RunnableConfig(recursion_limit=500)
             with st.spinner("Running agentic pipeline..."):
                 result = graph.invoke(state, config=config)
