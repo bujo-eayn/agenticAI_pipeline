@@ -1,8 +1,0 @@
-{
-    "metadata": {
-        "file_name": "760f4b38-3e59-44f4-90cd-5607dbcec029.pdf",
-        "mime_type": "application/pdf",
-        "file_size_bytes": 1254522
-    },
-    "structured_output": "**Thought**: The document chunk provided indicates that there are no images present. This suggests that the document might primarily contain text or possibly tables. Given this, the \"smoldocling_extractor\" would be appropriate for extracting structured content such as text and tables.\n\n**Action**: Call the \"smoldocling_extractor\" with the file to extract any structured content.\n\n```json\n{\n  \"tool\": \"smoldocling_extractor\",\n  \"files\": [\"760f4b38-3e59-44f4-90cd-5607dbcec029.pdf\"],\n  \"prompt\": \"Extract all structured content, including text and tables, from the document.\"\n}\n```"
-}

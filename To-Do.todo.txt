@@ -1,5 +1,5 @@
-#####Pick-up from
-- Completed the execution of the file only. Countinue by impelemnting the file and prompt execution
+Graph Structure:
+Entry → Supervisor → (Tools → Supervisor)* → End
 
 Entry Node
 - Add a way to detect wether pdf file is scanned before sharing it to gpt4o
@@ -36,3 +36,8 @@ Experiments:
 Supervisor Agent: See what has been shared by the user then come up with a plan:
  a. Message only-> Conversation Agent
  b. Message and attachment -> Document Extractor Agent -> Evaluator Agent -> 
+
+
+ #### 24th July Todo
+ - Fix ChatPromptTemplate missing variables.✅
+ - Add JsonLD to prepare the smoldocling responses

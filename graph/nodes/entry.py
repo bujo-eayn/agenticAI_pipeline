@@ -1,6 +1,7 @@
 # graph/nodes/entry.py
 import os
 from utils.logger import logger
+from langchain_core.messages import SystemMessage
 
 DUMMY_CONTEXT = "This is dummy context data to be used when the user provides only a prompt."
 
@@ -22,6 +23,9 @@ def entry_node(state):
         state["status_updates"] = status_updates
         return state
 
+    # Initialize messages list for agent communication
+    messages = []
+
     if has_prompt and not has_file:
         logger.info("✅ Prompt provided (no file).")
         status_updates.append("📝 Prompt detected, proceeding.")
@@ -30,6 +34,7 @@ def entry_node(state):
             "dummy_context": DUMMY_CONTEXT,
             "status_updates": status_updates,
             "chat_history": [],
+            "messages": messages,
         })
         return state
 
@@ -52,10 +57,12 @@ def entry_node(state):
 
         status_updates.append("📄 File uploaded and read successfully.")
         status_updates.append("✅ Entry node executed successfully.")
+
         state.update({
             "input_type": ["file_or_both"],
             "file_content": [content],
             "status_updates": status_updates,
             "chat_history": [],
+            "messages": messages,
         })
         return state

@@ -1,43 +1,42 @@
 # graph/graph_builder.py
 
-from langgraph.graph import StateGraph
-from graph.agents.supervisor_agent import supervisor_executor as supervisor_runnable
-from graph.nodes.entry import entry_node  # keep this simple entry node
-from langgraph.graph import END
-
-from typing import Annotated, Optional, TypedDict
-import operator
-
-
-class PipelineState(TypedDict, total=False):
-    file_path: list[str]
-    file_content: Optional[list[str]]
-    gpt_data: dict
-    smol_extracted: dict
-    evaluation_score: float
-    evaluation_passed: bool
-    evaluation_feedback: str
-    retry_attempts: int
-    final_doc: str
-    final_output_text: str
-    final_document_path: str
-    user_prompt: Optional[list[str]]
-    chat_history: Optional[list[str]]
-    dummy_context: Optional[str]
-    instructions: Optional[str]
-    input_type: list[str]
-    status_updates: Annotated[list[str], operator.add]
+from langgraph.graph import StateGraph, END
+from graph.agents.supervisor_agent import (
+    call_supervisor_model,
+    call_tools,
+    should_continue_supervisor
+)
+from graph.nodes.entry import entry_node
+from graph.state import PipelineState
 
 
 def build_graph():
     builder = StateGraph(PipelineState)
 
+    # Add the entry node
     builder.add_node("entry", entry_node)
-    builder.add_node("supervisor", supervisor_runnable)
 
+    # Add supervisor nodes following ReAct pattern
+    builder.add_node("supervisor", call_supervisor_model)
+    builder.add_node("tools", call_tools)
+
+    # Set entry point
     builder.set_entry_point("entry")
+
+    # Entry flows to supervisor
     builder.add_edge("entry", "supervisor")
 
-    builder.add_edge("supervisor", END)
-    
+    # Add conditional edge from supervisor
+    builder.add_conditional_edges(
+        "supervisor",
+        should_continue_supervisor,
+        {
+            "continue": "tools",  # If model wants to use tools
+            "end": END,          # If model is done
+        },
+    )
+
+    # After tools, go back to supervisor for next iteration
+    builder.add_edge("tools", "supervisor")
+
     return builder.compile()
