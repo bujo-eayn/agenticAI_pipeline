@@ -15,9 +15,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-OPENAIAI_API_KEY = os.getenv("OPENAIAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-client = OpenAI(api_key=OPENAIAI_API_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 CHUNK_SIZE_TOKENS = 3000  # Leave headroom for system/user prompt and GPT response
 # file_path = file_path[0]
