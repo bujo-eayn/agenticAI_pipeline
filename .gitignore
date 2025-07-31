@@ -43,7 +43,7 @@ langgraph.json
 
 
 # Ignore Debug Files
-debug/
+# debug/
 
 # Ignore the Findings folder
-findings/
+# findings/

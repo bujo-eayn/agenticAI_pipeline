@@ -1,139 +1,85 @@
-# Agentic Document Intelligence with GPT-4 & SmolDocling
+# Agentic AI for Deep Scientific Research
 
-This project is an agentic AI pipeline that uses GPT-4 as the primary agent and integrates SmolDocling as a tool to deeply analyze uploaded documents. It allows users to upload various document formats and extract structured content automatically, with an intelligent evaluation and feedback loop.
+## 🔍 Summary
 
----
+Agentic AI systems have the potential to transform deep scientific research by modeling and automating complex workflows. This project implements a multi-agent architecture that leverages foundational and specialized language models to parse, extract, and analyze scientific documents.
 
 ## 🚀 Features
 
-* Upload documents in multiple formats (PDF, Word, etc.)
-* Automatic conversion to PDF if needed
-* Dual extraction using GPT-4 and SmolDocling
-* Evaluation of extracted content using BLEU, overlap, and Jaccard similarity
-* Iterative feedback to SmolDocling to improve accuracy
-* Final structured output in Word and PDF formats
-* User prompt execution on final extracted document
-* Streamlit UI for ease of use
-* Dockerized for simple deployment
-
----
-
-## 🧠 Pipeline Overview
-
-1. **Upload Document**: User uploads a file and provides a prompt.
-2. **Preprocessing**: The document is converted to PDF (if not already).
-3. **GPT-4 Extraction**: Extracts text, tables, images, and structural elements.
-4. **SmolDocling Extraction**: Sends static prompt to SmolDocling backend for extraction.
-5. **Evaluation**: Compares GPT-4 vs SmolDocling outputs using:
-
-   * Textual overlap ratio
-   * BLEU score
-   * Jaccard similarity
-6. **Consistency Check**:
-
-   * ✅ If consistent: build final doc and apply user prompt.
-   * ❌ If inconsistent: identify differences and retry SmolDocling with feedback.
-7. **Final Output**: Assemble and export the cleaned, structured document.
-
----
-
-## 🗂️ Folder Structure
-
-```
-.
-├── app.py                  # Streamlit UI
-├── Dockerfile              # Docker configuration
-├── requirements.txt
-│
-├── graph/                  # LangGraph logic
-│   ├── graph_builder.py
-│   └── nodes/              # Nodes in the pipeline
-│       ├── user_input.py
-│       ├── preprocess_doc.py
-│       ├── gpt_extract.py
-│       ├── smoldocling_call.py
-│       ├── evaluate.py
-│       ├── retry_node.py
-│       ├── final_output.py
-│       └── apply_prompt.py
-│
-├── tools/                  # Interfaces to external tools
-│   ├── gpt_tool.py
-│   ├── smoldocling_tool.py
-│   └── storage.py
-│
-├── utils/                  # Utility modules
-│   ├── evaluator.py
-│   ├── doc_utils.py
-│   └── logger.py
-│
-└── uploads/                # Uploaded files storage
-```
-
----
-
-## 🧪 Setup Instructions
-
-### 🐳 Run with Docker
-
-```bash
-git clone https://github.com/yourname/agentic-doc-intel.git
-cd agentic-doc-intel
-docker build -t agentic-doc-intel .
-docker run -p 8501:8501 agentic-doc-intel
-```
-
-### 🧰 Run Locally (Python ≥ 3.10)
-
-```bash
-git clone https://github.com/yourname/agentic-doc-intel.git
-cd agentic-doc-intel
-python -m venv venv
-source venv/bin/activate  # or .\venv\Scripts\activate on Windows
-pip install -r requirements.txt
-streamlit run app.py
-```
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env` or configure your environment:
-
-```
-OPENAI_API_KEY=your-key-here
-SMOLDOCLING_URL=http://localhost:5001/api/extract
-```
-
----
+* Supervisor-worker architecture using GPT-4o
+* Document Parsing Agent using Smoldocling
+* Visual Interpreter Agent using Gemini
+* Modular and extensible framework
+* Workflow planning and error correction
+* Tools for external actions by agents
 
 ## 📦 Module Responsibilities
 
-* **graph/nodes/**: Each node represents a modular stage in the LangGraph pipeline.
-* **tools/gpt\_tool.py**: Manages interactions with GPT-4.
-* **tools/smoldocling\_tool.py**: Manages API calls to SmolDocling backend.
-* **utils/evaluator.py**: Compares GPT and SmolDocling outputs.
-* **utils/doc\_utils.py**: Converts and builds documents.
-* **utils/logger.py**: Sets up logging.
-* **tools/storage.py**: Saves uploaded files.
+| Module                    | Responsibility                                                         |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `graph/nodes/`            | LangGraph node definitions representing stages in the AI workflow      |
+| `graph/agents/`           | Individual agent implementations with modular logic and interactivity  |
+| `tools/`                  | Tool definitions used by agents to accomplish specific sub-tasks       |
+| `utils/`                  | Utility functions for data formatting, logging, and support operations |
+| `uploads/`                | Temporary storage for uploaded documents or files                      |
+| `debug/`                  | GPT reasoning traces and execution logs for Version 2                  |
+| `outputs/pdf_only_tests/` | Output results from Version 1's evaluation phase                       |
+| `findings/`               | Discovered patterns and emergent behaviors from Version 2 experiments  |
+| `tests/`                  | Unit tests for validating individual module functionality              |
 
----
+## 🧪 Versions
 
-## ✨ Example Use Cases
+### 🔖 Version 1 (Main Branch)
 
-* Contract analysis
-* Invoice parsing
-* Research paper summarization
-* Regulatory document extraction
+* Stable MVP implementation of LangGraph workflow
+* Basic task driven logic with a static pipeline
+* Available at: [main branch](https://github.com/bujo-eayn/agenticAI_pipeline/tree/main)
 
----
+### 🧪 Version 2 (Current Branch)
 
-## 📬 Contribute
+* Advanced Agentic workflow with supervisor-worker pattern
+* True agents built (Supervisor) with tool and agent calling capacity
+* Abstract and research documentation added
+* You are currently viewing **Version 2** in this branch
 
-PRs welcome. Open an issue to discuss changes or ideas.
+## 📄 Abstract & Research
 
----
+The scientific abstract detailing the research scope, system design, and results is available in [`about.md`](./about.md).
+
+## ⚙️ Setup Instructions
+
+```bash
+# Clone the repository
+$ git clone https://github.com/bujo-eayn/agenticAI_pipeline
+$ cd agenticAI_pipeline
+
+# Set up a virtual environment (recommended)
+$ python -m venv venv
+$ source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+$ pip install -r requirements.txt
+```
+
+### 🔐 Environment Variables
+
+Create a `.env` file in the root directory and include the following:
+
+```env
+OPENAI_API_KEY=your_openai_key_here
+SMOLDOCLING_API_URL=http://localhost:8080
+GEMINI_API_KEY=your_gemini_key_here
+```
+
+## 👥 Contributors
+
+We gratefully acknowledge contributions from the following GitHub users:
+
+* [@Daniela Patricia Cheng Rodriguez](https://github.com/DanielaCh257)
+* [@Faith Wangui Njoroge](https://github.com/WanguiMps)
+* [@Wesley McGinn](https://github.com/WesleyMcGinn)
+* [@Job Ian Onyango](https://github.com/bujo-eayn)
 
 ## 📜 License
 
-MIT
+This project is licensed under the [MIT License](./LICENSE).

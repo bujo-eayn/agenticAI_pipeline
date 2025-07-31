@@ -1,0 +1,158 @@
+2025-07-09 13:10:24,204 - INFO - Building graph and starting pipeline.
+<IPython.core.display.Image object>
+2025-07-09 13:10:24,400 - INFO - Executing entry_node with state: {'file_path': [], 'retry_attempts': [0], 'user_prompt': ['Hi'], 'input_type': ['prompt_only'], 'status_updates': []}
+2025-07-09 13:10:24,401 - INFO - ✅ Prompt provided (no file).
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like there was an attempt to upload a document, but I only received a greeting. Could you please try uploading the document again so I can assist you with the extraction process?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like you've uploaded a document. Could you please provide more details or clarify what you would like to do with it?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like you've uploaded a document. Could you please provide more details or clarify what you would like to do with it?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like you've uploaded a document. Could you please provide more details or clarify what you need assistance with regarding the document?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or analyze, feel free to upload them.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like you've uploaded a document. Could you please provide more details or clarify what you would like to do with it?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or analyze, feel free to upload them.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like you've uploaded a document. Could you please provide more details or clarify what you need help with?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like there was an attempt to upload a document, but I only received a greeting. Could you please try uploading the document again so I can assist you with the extraction process?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or analyze, feel free to upload them.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! How can I assist you today? If you have any documents you'd like me to process or analyze, feel free to upload them.
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Hello! It seems like you've uploaded a document. Could you please provide more details or specify what you would like to do with it?
+
+> Finished chain.
+
+
+> Entering new AgentExecutor chain...
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for post.a1d9345c-70e9-4a04-abf0-9d090c846bfa.inputs: field size 272629960 exceeds maximum allowed size of 209715200 bytes"}\n')
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for patch.2a487f89-afac-473c-9fa2-608dfb8b91f3.inputs: field size 272629984 exceeds maximum allowed size of 209715200 bytes"}\n')        
+Hello! It seems like you've uploaded a document. Could you please provide more details or confirm if you need assistance with document extraction?
+
+> Finished chain.
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for patch.d6843d76-020f-4c3a-846f-316f8853c88c.inputs: field size 272629984 exceeds maximum allowed size of 209715200 bytes"}\n')        
+
+
+> Entering new AgentExecutor chain...
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for post.e879af62-92f6-4f51-9f7e-57230ddefb37.inputs: field size 545259720 exceeds maximum allowed size of 209715200 bytes"}\n')
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for patch.33f26e1b-2c1c-4499-a20f-f2ffd3e48f6c.inputs: field size 545259744 exceeds maximum allowed size of 209715200 bytes"}\n')        
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for patch.d96ae4ac-4684-4c2c-b769-cc903a185abb.inputs: field size 545259744 exceeds maximum allowed size of 209715200 bytes"}\n')        
+Hello! How can I assist you today? If you have any documents you'd like me to process or any questions, feel free to let me know.
+
+> Finished chain.
+  Stopping...
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for patch.615630a1-2e4c-4209-be62-cdc69307e01c.inputs: field size 545259744 exceeds maximum allowed size of 209715200 bytes"}\n')        
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('422 Client Error: unknown for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Unprocessable entity: invalid Content-Length or length parameter for patch.e879af62-92f6-4f51-9f7e-57230ddefb37.inputs: field size 545259720 exceeds maximum allowed size of 209715200 bytes"}\n')        
+
+
+> Entering new AgentExecutor chain...
+(pipeline) 
+
+
+##### I had a loop to supervisor within my graph_builder
