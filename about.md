@@ -8,7 +8,7 @@
 - Job Ian Onyango, Strathmore University  
 - Samuel Rund, Professor, University of Notre Dame  
 - Andrey Kuehlkamp, Professor, University of Notre Dame  
-- Don Brower, Researcher, University of Notre Dame 
+- Don Brower, Professor, University of Notre Dame 
 - RADlings, Center for Research Computing (CRC), University of Notre Dame
 
 ---
